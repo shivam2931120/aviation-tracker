@@ -1,0 +1,114 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Flight tracking model - stores real-time and historical flight data
+model Flight {
+  id                  String    @id @default(uuid())
+  icao24              String
+  callsign            String
+  airlineIata         String
+  departureIata       String
+  arrivalIata         String
+  scheduledDeparture  DateTime
+  actualDeparture     DateTime?
+  scheduledArrival    DateTime
+  actualArrival       DateTime?
+  delayMinutes        Int?
+  altitude            Float?
+  velocity            Float?
+  trueTrack           Float?
+  reliabilityScore    Float
+  status              String
+  turnaroundEstimate  Int?
+  coordinates         Json      // { lat: number, lng: number, history: Array<{lat, lng, timestamp}> }
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+
+  // Indexes for efficient querying
+  @@index([icao24])
+  @@index([departureIata, arrivalIata])
+  @@index([airlineIata])
+  @@index([status])
+  @@index([scheduledDeparture])
+}
+
+// Airport model - stores airport information and statistics
+model Airport {
+  iata         String  @id
+  icao         String
+  name         String
+  city         String
+  country      String
+  latitude     Float
+  longitude    Float
+  otpPercent   Float   // On-Time Performance percentage
+  avgDelay     Float   // Average delay in minutes
+  totalFlights Int
+  riskScore    Float   // Risk assessment score (0-100)
+  wikiLink     String
+  clusterTag   String?
+  timezone     String?
+  
+  @@index([icao])
+  @@index([country])
+  @@index([otpPercent])
+}
+
+// Route model - stores route reliability data
+model Route {
+  id               Int    @id @default(autoincrement())
+  originIata       String
+  destIata         String
+  airlineIata      String
+  airlineName      String
+  otpPercent       Float  // On-Time Performance percentage
+  avgDelay         Float  // Average delay in minutes
+  weatherRisk      Float  // Weather risk factor (0-1)
+  peakHourFactor   Float  // Peak hour congestion factor (0-2)
+  reliabilityIndex Float  // Computed reliability score
+
+  @@unique([originIata, destIata, airlineIata])
+  @@index([originIata])
+  @@index([destIata])
+  @@index([airlineIata])
+  @@index([reliabilityIndex])
+}
+
+// Incident model - stores airport/route incidents
+model Incident {
+  id          Int      @id @default(autoincrement())
+  airportIata String
+  date        DateTime
+  type        String   // e.g., "WEATHER", "MECHANICAL", "SECURITY", "ATC"
+  impactLevel Int      // 1-5 severity scale
+  description String
+  resolved    Boolean  @default(false)
+  
+  @@index([airportIata])
+  @@index([date])
+  @@index([type])
+}
+
+// Airline model - stores airline information
+model Airline {
+  iata        String  @id
+  icao        String
+  name        String
+  country     String
+  otpPercent  Float   // On-Time Performance percentage
+  avgDelay    Float
+  fleetSize   Int?
+  logoUrl     String?
+  
+  @@index([icao])
+  @@index([otpPercent])
+}

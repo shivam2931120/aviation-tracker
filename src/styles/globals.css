@@ -1,0 +1,477 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Aviation Theme Base Styles */
+:root {
+  --bg-primary: #000000;
+  --bg-secondary: #0a0a0a;
+  --bg-tertiary: #111111;
+  --accent: #dc2626;
+  --accent-hover: #b91c1c;
+  --accent-light: #ef4444;
+  --accent-glow: rgba(220, 38, 38, 0.3);
+  --text-primary: #ffffff;
+  --text-secondary: #e5e5e5;
+  --text-muted: #a3a3a3;
+  --border-color: #262626;
+  --border-light: #404040;
+}
+
+/* Base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Fix layout gaps */
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Typography classes */
+.font-heading {
+  font-family: 'Roboto Condensed', sans-serif;
+}
+
+.font-body {
+  font-family: 'Inter', sans-serif;
+}
+
+.font-table {
+  font-family: 'Source Sans 3', sans-serif;
+}
+
+.font-code {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+}
+
+/* Thin scrollbar class */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 4px;
+}
+
+/* Utility classes */
+@layer components {
+  .card {
+    @apply bg-aviation-dark border border-aviation-border rounded-2xl;
+  }
+
+  .card-hover {
+    @apply transition-all duration-300 hover:border-aviation-red hover:shadow-red-md;
+  }
+
+  .btn-primary {
+    @apply bg-aviation-red hover:bg-aviation-red-hover text-white font-medium py-2 px-4 rounded-lg transition-all duration-200 flex items-center gap-2;
+  }
+
+  .btn-secondary {
+    @apply bg-transparent border border-aviation-border hover:border-aviation-red text-white font-medium py-2 px-4 rounded-lg transition-all duration-200;
+  }
+
+  .input-field {
+    @apply bg-aviation-darker border border-aviation-border rounded-lg px-4 py-2.5 text-white text-sm placeholder-aviation-muted focus:outline-none focus:border-aviation-red transition-colors;
+  }
+
+  .table-header {
+    @apply font-source-sans text-aviation-muted uppercase text-xs tracking-wider;
+  }
+
+  .table-cell {
+    @apply font-source-sans text-white py-3 px-4;
+  }
+
+  .callsign {
+    @apply font-jetbrains text-aviation-red font-medium;
+  }
+
+  .icao-code {
+    @apply font-jetbrains text-aviation-muted text-sm;
+  }
+
+  .stat-value {
+    @apply font-roboto-condensed text-3xl font-bold text-white;
+  }
+
+  .stat-label {
+    @apply font-inter text-aviation-muted text-sm;
+  }
+
+  .glow-red {
+    box-shadow: 0 0 15px var(--accent-glow), 0 0 30px rgba(220, 38, 38, 0.15);
+  }
+
+  .gradient-red {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
+  }
+
+  /* 3D effect shadows */
+  .shadow-3d {
+    box-shadow:
+      0 4px 6px -1px rgba(0, 0, 0, 0.5),
+      0 2px 4px -2px rgba(0, 0, 0, 0.5),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+
+  .shadow-red-glow {
+    box-shadow:
+      0 0 20px rgba(220, 38, 38, 0.3),
+      0 0 40px rgba(220, 38, 38, 0.1),
+      0 4px 6px -1px rgba(0, 0, 0, 0.5);
+  }
+
+  /* Glass effect */
+  .glass {
+    background: rgba(10, 10, 10, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  /* Neon text */
+  .neon-text {
+    text-shadow: 0 0 10px var(--accent), 0 0 20px var(--accent), 0 0 30px var(--accent);
+  }
+
+  /* Pulse animation for live indicators */
+  .pulse-live {
+    animation: pulse-live 2s ease-in-out infinite;
+  }
+}
+
+@keyframes pulse-live {
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.7;
+    transform: scale(1.1);
+  }
+}
+
+/* Leaflet map customization */
+.leaflet-container {
+  background-color: #0a1628 !important;
+  font-family: 'Inter', sans-serif !important;
+}
+
+.leaflet-tile {
+  /* Increased brightness for better visibility of map features */
+  filter: brightness(1.1) contrast(1.1) saturate(0.9);
+}
+
+.leaflet-control-zoom {
+  border: 1px solid var(--border-color) !important;
+  border-radius: 8px !important;
+  overflow: hidden;
+}
+
+.leaflet-control-zoom a {
+  background-color: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-color) !important;
+  width: 30px !important;
+  height: 30px !important;
+  line-height: 30px !important;
+}
+
+.leaflet-control-zoom a:hover {
+  background-color: var(--accent) !important;
+}
+
+.leaflet-popup-content-wrapper {
+  background-color: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-color);
+  border-radius: 12px !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5) !important;
+}
+
+.leaflet-popup-tip {
+  background-color: var(--bg-secondary) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+.leaflet-popup-close-button {
+  color: var(--text-muted) !important;
+}
+
+.leaflet-popup-close-button:hover {
+  color: var(--accent) !important;
+}
+
+/* Custom aircraft icon animation */
+.custom-aircraft-icon {
+  transition: transform 0.3s ease;
+}
+
+.custom-aircraft-icon:hover {
+  transform: scale(1.3);
+}
+
+/* Animation classes */
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.4s ease-out;
+}
+
+.animate-pulse-slow {
+  animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Status colors */
+.status-active {
+  @apply text-green-400;
+}
+
+.status-delayed {
+  @apply text-aviation-red;
+}
+
+.status-scheduled {
+  @apply text-aviation-muted;
+}
+
+.status-landed {
+  @apply text-blue-400;
+}
+
+/* Reliability score colors */
+.reliability-high {
+  @apply text-green-400;
+}
+
+.reliability-medium {
+  @apply text-yellow-400;
+}
+
+.reliability-low {
+  @apply text-aviation-red;
+}
+
+/* Gradient backgrounds */
+.bg-gradient-radial {
+  background: radial-gradient(ellipse at center, rgba(220, 38, 38, 0.1) 0%, transparent 70%);
+}
+
+.bg-grid {
+  background-image:
+    linear-gradient(rgba(220, 38, 38, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(220, 38, 38, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Interactive hover effects */
+.hover-lift {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+/* Canvas container */
+canvas {
+  display: block;
+}
+
+/* Mobile responsive utilities */
+@media (max-width: 768px) {
+  .card {
+    @apply rounded-xl;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    @apply py-1.5 px-3 text-sm;
+  }
+
+  .input-field {
+    @apply py-2 px-3 text-sm;
+  }
+
+  .stat-value {
+    @apply text-xl;
+  }
+
+  /* Hide table on mobile, show cards */
+  .table-responsive-mobile {
+    display: none;
+  }
+
+  .cards-responsive-mobile {
+    display: block;
+  }
+}
+
+@media (min-width: 769px) {
+  .table-responsive-mobile {
+    display: block;
+  }
+
+  .cards-responsive-mobile {
+    display: none;
+  }
+}
+
+/* Safe area padding for mobile */
+@supports (padding: max(0px)) {
+  .safe-area-bottom {
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+
+  .safe-area-top {
+    padding-top: max(0px, env(safe-area-inset-top));
+  }
+}
+
+/* Touch-friendly targets */
+@media (hover: none) and (pointer: coarse) {
+
+  .btn-primary,
+  .btn-secondary {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* Animated flight path styles */
+.animated-flight-path {
+  stroke-dasharray: 5, 10;
+  animation: dash 1s linear infinite;
+}
+
+@keyframes dash {
+  to {
+    stroke-dashoffset: -15;
+  }
+}
+
+/* Animated plane icon */
+.animated-plane-icon {
+  transition: transform 0.1s ease-out;
+}
+
+/* Heatmap intensity colors */
+.heatmap-legend {
+  background: linear-gradient(90deg,
+      #000000 0%,
+      #1a1a2e 20%,
+      #16213e 40%,
+      #e94560 60%,
+      #dc2626 80%,
+      #ff6b6b 100%);
+}
+
+/* Loading skeleton */
+.skeleton {
+  background: linear-gradient(90deg, var(--bg-secondary) 25%, var(--bg-tertiary) 50%, var(--bg-secondary) 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Hide scrollbar but keep functionality */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Mobile navigation overlay */
+.mobile-nav-overlay {
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
